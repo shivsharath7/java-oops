@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.VehicleExitController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Vehicle Check-Out &amp; Payment Settlement" styleClass="page-title"/>
+                <Label text="Search active parking session, calculate duration and tiered tariffs, settle payment, and release bay" styleClass="page-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Lookup and Payment Panel -->
+            <VBox styleClass="panel-card" prefWidth="440" minWidth="400" spacing="14">
+                <Label text="Find Active Parking Session" styleClass="section-title"/>
+
+                <HBox spacing="8">
+                    <TextField fx:id="txtSearchQuery" promptText="Enter Ticket ID or Vehicle Plate" HBox.hgrow="ALWAYS" onAction="#handleSearchSession"/>
+                    <Button text="🔍 Search" styleClass="btn-primary" onAction="#handleSearchSession"/>
+                </HBox>
+                <Label fx:id="lblSearchFeedback" text="Example: KA05EV8821 or SP-2026-0801" styleClass="kpi-subtext"/>
+
+                <!-- Session Overview Info -->
+                <VBox spacing="8" style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="SESSION PARTICULARS" styleClass="kpi-label"/>
+                    <HBox><Label text="Ticket ID: " styleClass="form-label"/><Label fx:id="lblDetailsTicket" text="--" style="-fx-font-weight: bold; -fx-text-fill: #f8fafc;"/></HBox>
+                    <HBox><Label text="Vehicle Number: " styleClass="form-label"/><Label fx:id="lblDetailsPlate" text="--" style="-fx-font-weight: bold; -fx-text-fill: #38bdf8;"/></HBox>
+                    <HBox><Label text="Slot Assigned: " styleClass="form-label"/><Label fx:id="lblDetailsSlot" text="--" style="-fx-font-weight: bold; -fx-text-fill: #10b981;"/></HBox>
+                    <HBox><Label text="Entry Timestamp: " styleClass="form-label"/><Label fx:id="lblDetailsEntryTime" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Current Time: " styleClass="form-label"/><Label fx:id="lblDetailsExitTime" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Total Duration: " styleClass="form-label"/><Label fx:id="lblDetailsDuration" text="--" style="-fx-font-weight: bold; -fx-text-fill: #f59e0b;"/></HBox>
+                </VBox>
+
+                <!-- Payment Form -->
+                <VBox spacing="10">
+                    <Label text="PAYMENT PROCESSING" styleClass="kpi-label"/>
+
+                    <HBox spacing="12">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                            <Label text="Payment Method *" styleClass="form-label"/>
+                            <ComboBox fx:id="comboPaymentMethod" maxWidth="Infinity"/>
+                        </VBox>
+
+                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                            <Label text="Total Due (INR)" styleClass="form-label"/>
+                            <TextField fx:id="txtTotalFeeDisplay" editable="false" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #10b981; -fx-background-color: #111827;"/>
+                        </VBox>
+                    </HBox>
+
+                    <Button fx:id="btnProcessExit" text="💳 Confirm Payment &amp; Release Slot" styleClass="btn-success" maxWidth="Infinity" onAction="#handleProcessExitPayment"/>
+                </VBox>
+
+                <Label fx:id="lblCheckoutStatus" text="" wrapText="true" style="-fx-font-size: 12px;"/>
+            </VBox>
+
+            <!-- Right: Fee Breakdown & Official Tax Receipt -->
+            <VBox HBox.hgrow="ALWAYS" spacing="16">
+                <!-- Tariff Breakdown Card -->
+                <VBox styleClass="panel-card" spacing="12">
+                    <Label text="Tariff Calculation Breakdown" styleClass="section-title"/>
+
+                    <GridPane hgap="12" vgap="8" style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="60"/>
+                            <ColumnConstraints percentWidth="40"/>
+                        </columnConstraints>
+
+                        <Label text="Base First Hour Tariff:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblBreakdownFirstHr" text="₹0.00" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label text="Additional Hours Billed:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblBreakdownExtraHrs" text="0 hrs @ ₹0.00" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="EV Fast Charging Surcharge:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblBreakdownEvSurcharge" text="₹0.00" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="Grace Period Exemption (15m):" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label fx:id="lblBreakdownGrace" text="Not Applicable" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <Separator styleClass="sidebar-separator" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+
+                        <Label text="FINAL PARKING FEE:" style="-fx-font-weight: 800; -fx-text-fill: #f8fafc;" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <Label fx:id="lblBreakdownTotal" text="₹0.00" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #10b981;" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    </GridPane>
+                </VBox>
+
+                <!-- Official Receipt Preview -->
+                <VBox styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Official Checkout Receipt" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="RECEIPT PREVIEW" styleClass="kpi-label" style="-fx-text-fill: #10b981;"/>
+                    </HBox>
+
+                    <VBox styleClass="receipt-container" spacing="4">
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                        <Label text="             SMARTPARK PARKING MANAGEMENT SYSTEM               " styleClass="receipt-text" style="-fx-font-weight: bold;"/>
+                        <Label text="                  OFFICIAL TAX INVOICE &amp; RECEIPT               " styleClass="receipt-text"/>
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                        <HBox><Label text="RECEIPT NO:     " styleClass="receipt-text"/><Label fx:id="lblRcptNo" text="RCPT-XXXXXX" styleClass="receipt-text" style="-fx-font-weight: bold;"/></HBox>
+                        <HBox><Label text="TICKET REF:     " styleClass="receipt-text"/><Label fx:id="lblRcptTicket" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="VEHICLE NO:     " styleClass="receipt-text"/><Label fx:id="lblRcptPlate" text="--" styleClass="receipt-text" style="-fx-font-weight: bold;"/></HBox>
+                        <HBox><Label text="SLOT OCCUPIED:  " styleClass="receipt-text"/><Label fx:id="lblRcptSlot" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="CHECK-IN:       " styleClass="receipt-text"/><Label fx:id="lblRcptCheckIn" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="CHECK-OUT:      " styleClass="receipt-text"/><Label fx:id="lblRcptCheckOut" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="DURATION:       " styleClass="receipt-text"/><Label fx:id="lblRcptDuration" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="PAYMENT METHOD: " styleClass="receipt-text"/><Label fx:id="lblRcptPayMethod" text="--" styleClass="receipt-text"/></HBox>
+                        <Label text="----------------------------------------------------------------" styleClass="receipt-text"/>
+                        <HBox><Label text="TOTAL AMOUNT:   " styleClass="receipt-text" style="-fx-font-weight: bold;"/><Label fx:id="lblRcptAmount" text="INR 0.00 (PAID)" styleClass="receipt-text" style="-fx-font-weight: bold; -fx-text-fill: #10b981;"/></HBox>
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                        <Label text="    Thank you for visiting! Drive safely and visit again.       " styleClass="receipt-text"/>
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

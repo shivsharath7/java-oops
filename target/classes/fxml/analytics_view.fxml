@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.AnalyticsController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Business Analytics &amp; Management Reports" styleClass="page-title"/>
+                <Label text="Statistical charts, financial revenue trends, multi-storey capacity utilization, and CSV report exports" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="📥 Export Report to CSV" styleClass="btn-primary" onAction="#handleExportCsv"/>
+            <Button text="🔄 Refresh Charts" styleClass="btn-secondary" onAction="#loadAnalytics"/>
+        </HBox>
+
+        <!-- Filter bar -->
+        <HBox spacing="14" alignment="CENTER_LEFT" styleClass="panel-card" style="-fx-padding: 10 16;">
+            <Label text="Filter Vehicle Category:" styleClass="form-label"/>
+            <ComboBox fx:id="comboAnalyticsVehicleType" prefWidth="160" onAction="#loadAnalytics"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblReportStatus" text="" style="-fx-font-size: 12px;"/>
+        </HBox>
+
+        <!-- 4 KPI Summary Metric Cards -->
+        <HBox spacing="14">
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                <Label text="TOTAL REVENUE COLLECTED" styleClass="kpi-label"/>
+                <Label fx:id="lblTotalRevenue" text="₹0.00" styleClass="kpi-value, text-emerald"/>
+                <Label text="Sum of completed parking sessions" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                <Label text="COMPLETED SESSIONS" styleClass="kpi-label"/>
+                <Label fx:id="lblCompletedCount" text="0" styleClass="kpi-value"/>
+                <Label text="Successful checkouts" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                <Label text="AVERAGE PARKING DURATION" styleClass="kpi-label"/>
+                <Label fx:id="lblAvgDuration" text="0 mins" styleClass="kpi-value, text-sky"/>
+                <Label text="Mean dwell time across complex" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                <Label text="TOTAL RESERVATIONS" styleClass="kpi-label"/>
+                <Label fx:id="lblReservationCount" text="0" styleClass="kpi-value, text-amber"/>
+                <Label text="Holds and advance bookings" styleClass="kpi-subtext"/>
+            </VBox>
+        </HBox>
+
+        <!-- Charts Row 1: Floor Occupancy BarChart & Vehicle Type PieChart -->
+        <HBox spacing="16">
+            <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="10">
+                <Label text="Occupancy Distribution Across Floors" styleClass="section-title"/>
+                <BarChart fx:id="chartFloorOccupancy" prefHeight="260" legendVisible="false">
+                    <xAxis><CategoryAxis label="Floor Level"/></xAxis>
+                    <yAxis><NumberAxis label="Occupied Slots"/></yAxis>
+                </BarChart>
+            </VBox>
+
+            <VBox styleClass="panel-card" prefWidth="420" spacing="10">
+                <Label text="Vehicle Category Breakdown" styleClass="section-title"/>
+                <PieChart fx:id="chartVehicleTypes" prefHeight="260" legendVisible="true"/>
+            </VBox>
+        </HBox>
+
+        <!-- Charts Row 2: Daily Revenue Timeline -->
+        <VBox styleClass="panel-card" spacing="10">
+            <Label text="Daily Revenue Collection Timeline (INR)" styleClass="section-title"/>
+            <BarChart fx:id="chartDailyRevenue" prefHeight="260" legendVisible="false">
+                <xAxis><CategoryAxis label="Date"/></xAxis>
+                <yAxis><NumberAxis label="Revenue (INR)"/></yAxis>
+            </BarChart>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.MainAppController"
+            stylesheets="@../css/style.css" styleClass="main-container">
+
+    <!-- Persistent Left Navigation Sidebar -->
+    <left>
+        <VBox spacing="6" styleClass="sidebar" prefWidth="250" minWidth="240">
+            <padding>
+                <Insets top="18" right="14" bottom="18" left="14"/>
+            </padding>
+
+            <!-- Brand Header -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="brand-icon-box">
+                    <Label text="P" styleClass="brand-icon"/>
+                </StackPane>
+                <VBox spacing="1">
+                    <Label text="SmartPark" styleClass="brand-title"/>
+                    <Label text="Intelligent Parking System" styleClass="brand-subtitle"/>
+                </VBox>
+            </HBox>
+
+            <Separator styleClass="sidebar-separator">
+                <VBox.margin>
+                    <Insets top="10" bottom="10"/>
+                </VBox.margin>
+            </Separator>
+
+            <!-- 12 Navigation Items -->
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="content-scrollpane" VBox.vgrow="ALWAYS">
+                <VBox spacing="4">
+                    <Button fx:id="btnDashboard" text="📊  Dashboard" styleClass="nav-btn, nav-btn-active" maxWidth="Infinity" onAction="#handleNavDashboard"/>
+                    <Button fx:id="btnMap" text="🗺️  Live Parking Map" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavMap"/>
+                    <Button fx:id="btnEntry" text="🚗  Vehicle Entry" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavEntry"/>
+                    <Button fx:id="btnExit" text="🏁  Vehicle Exit &amp; Pay" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavExit"/>
+                    <Button fx:id="btnFind" text="🔍  Find My Vehicle" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavFind"/>
+                    <Button fx:id="btnAlloc" text="🧠  Smart Slot Allocation" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavAlloc"/>
+                    <Button fx:id="btnReservations" text="⏳  Temporary Reservations" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavReservations"/>
+                    <Button fx:id="btnEv" text="⚡  EV Charging Bays" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavEv"/>
+                    <Button fx:id="btnAnomalies" text="⚠️  Alerts &amp; Anomalies" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavAnomalies"/>
+                    <Button fx:id="btnHistory" text="📜  Parking History &amp; Logs" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavHistory"/>
+                    <Button fx:id="btnReports" text="📈  Analytics &amp; Reports" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavReports"/>
+                    <Button fx:id="btnAdmin" text="⚙️  Administration &amp; Rules" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavAdmin"/>
+                </VBox>
+            </ScrollPane>
+
+            <Separator styleClass="sidebar-separator">
+                <VBox.margin>
+                    <Insets top="8" bottom="8"/>
+                </VBox.margin>
+            </Separator>
+
+            <!-- System Info Footer Card -->
+            <VBox styleClass="sidebar-footer-card" spacing="4">
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="●" styleClass="text-emerald" style="-fx-font-size: 14px;"/>
+                    <Label text="System Online" style="-fx-font-weight: bold; -fx-text-fill: #f8fafc; -fx-font-size: 12px;"/>
+                </HBox>
+                <Label text="DB: MySQL 8 (smartpark_db)" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+                <Label text="Engine: Congestion Aware" styleClass="text-sky" style="-fx-font-size: 11px;"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Top Navigation Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="top-header">
+            <VBox spacing="2">
+                <Label fx:id="lblHeaderTitle" text="Live Parking Dashboard" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #f8fafc;"/>
+                <Label fx:id="lblHeaderSubtitle" text="Real-time multi-floor monitoring, vehicle operations, and congestion control" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Clock Badge -->
+            <Label fx:id="lblClock" text="2026-10-14 10:30:00" styleClass="header-time-badge"/>
+
+            <!-- Quick Refresh Button -->
+            <Button text="🔄 Refresh" styleClass="btn-secondary" onAction="#handleGlobalRefresh" style="-fx-padding: 6 12; -fx-font-size: 12px;"/>
+
+            <!-- Logged-in User Chip -->
+            <HBox alignment="CENTER" spacing="8" styleClass="user-badge">
+                <VBox alignment="CENTER_RIGHT" spacing="1">
+                    <Label fx:id="lblUserName" text="Master Administrator" styleClass="user-name"/>
+                    <Label fx:id="lblUserRole" text="ADMINISTRATOR" styleClass="user-role"/>
+                </VBox>
+                <Button text="Logout" styleClass="btn-secondary" onAction="#handleLogout" style="-fx-padding: 4 8; -fx-font-size: 11px;"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Center Dynamic Content Container -->
+    <center>
+        <StackPane fx:id="contentContainer" styleClass="content-area"/>
+    </center>
+
+</BorderPane>

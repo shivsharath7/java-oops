@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.SmartAllocationController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Congestion-Aware Smart Allocation Engine" styleClass="page-title"/>
+                <Label text="Compare standard entrance-first allocation versus weighted multi-factor congestion optimization" styleClass="page-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Scenario Parameters -->
+            <VBox styleClass="panel-card" prefWidth="420" minWidth="380" spacing="14">
+                <Label text="Test Vehicle Scenario" styleClass="section-title"/>
+
+                <VBox spacing="4">
+                    <Label text="Vehicle Type" styleClass="form-label"/>
+                    <ComboBox fx:id="comboSimVehicleType" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="8" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="SPECIAL REQUIREMENTS" styleClass="kpi-label"/>
+                    <CheckBox fx:id="chkSimCharging" text="⚡ Fast EV Charging Required" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;"/>
+                    <CheckBox fx:id="chkSimAccessible" text="♿ Accessibility / Step-Free Access Required" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;"/>
+                </VBox>
+
+                <!-- Algorithm Weight Sliders -->
+                <VBox spacing="10">
+                    <Label text="CONGESTION STRATEGY WEIGHT CONFIGURATION" styleClass="kpi-label"/>
+
+                    <VBox spacing="3">
+                        <HBox><Label text="Zone Congestion Weight: " styleClass="form-label"/><Label fx:id="lblCongestionWeight" text="40%" style="-fx-font-weight: bold; -fx-text-fill: #38bdf8;"/></HBox>
+                        <Slider fx:id="sliderCongestion" min="10" max="80" value="40" blockIncrement="5"/>
+                    </VBox>
+
+                    <VBox spacing="3">
+                        <HBox><Label text="Entrance Distance Weight: " styleClass="form-label"/><Label fx:id="lblEntranceWeight" text="35%" style="-fx-font-weight: bold; -fx-text-fill: #10b981;"/></HBox>
+                        <Slider fx:id="sliderEntrance" min="10" max="80" value="35" blockIncrement="5"/>
+                    </VBox>
+
+                    <VBox spacing="3">
+                        <HBox><Label text="Exit Distance Weight: " styleClass="form-label"/><Label fx:id="lblExitWeight" text="25%" style="-fx-font-weight: bold; -fx-text-fill: #f59e0b;"/></HBox>
+                        <Slider fx:id="sliderExit" min="10" max="80" value="25" blockIncrement="5"/>
+                    </VBox>
+                </VBox>
+
+                <Button text="⚡ Run Head-to-Head Comparison" styleClass="btn-primary" maxWidth="Infinity" onAction="#handleRunComparison"/>
+            </VBox>
+
+            <!-- Right: Side-by-Side Comparison -->
+            <VBox HBox.hgrow="ALWAYS" spacing="16">
+                <HBox spacing="14">
+                    <!-- Standard Strategy Result -->
+                    <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="10">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Standard (Entrance First)" styleClass="section-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblStdSlot" text="SLOT: --" style="-fx-font-weight: 800; -fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                        </HBox>
+                        <VBox style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;" spacing="4">
+                            <Label fx:id="lblStdInfo" text="Picks first empty spot matching vehicle type near entrance." wrapText="true" styleClass="text-muted" style="-fx-font-size: 12px;"/>
+                            <Label fx:id="lblStdCongestion" text="Zone Congestion: --" styleClass="kpi-subtext"/>
+                        </VBox>
+                        <Label text="Limitation: Tends to overload Ground Floor Zone A and creates bottlenecks." wrapText="true" styleClass="kpi-subtext"/>
+                    </VBox>
+
+                    <!-- Congestion-Aware Strategy Result -->
+                    <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="10" style="-fx-border-color: #2563eb; -fx-border-width: 1.5;">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Congestion-Aware (Recommended)" styleClass="section-title" style="-fx-text-fill: #38bdf8;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblCongSlot" text="SLOT: --" style="-fx-font-weight: 800; -fx-text-fill: #10b981; -fx-font-size: 14px;"/>
+                        </HBox>
+                        <VBox style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;" spacing="4">
+                            <Label fx:id="lblCongInfo" text="Optimizes multi-factor score to balance parking load." wrapText="true" styleClass="text-muted" style="-fx-font-size: 12px;"/>
+                            <Label fx:id="lblCongDetails" text="Score: -- | Zone Congestion: --" styleClass="kpi-subtext" style="-fx-text-fill: #38bdf8;"/>
+                        </VBox>
+                        <Label text="Advantage: Prevents entry jams, distributes vehicles evenly, and matches amenities." wrapText="true" styleClass="kpi-subtext"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Detailed Candidate Rankings Table -->
+                <VBox styleClass="panel-card" spacing="12">
+                    <Label text="Detailed Candidate Rankings (Congestion-Aware Strategy)" styleClass="section-title"/>
+                    <TableView fx:id="tableRanking" prefHeight="260" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colRankSlot" text="Slot" prefWidth="90"/>
+                            <TableColumn fx:id="colRankFloor" text="Floor / Zone" prefWidth="130"/>
+                            <TableColumn fx:id="colRankScore" text="Total Score" prefWidth="90"/>
+                            <TableColumn fx:id="colRankCong" text="Congestion Score" prefWidth="120"/>
+                            <TableColumn fx:id="colRankDist" text="Entrance Dist" prefWidth="100"/>
+                            <TableColumn fx:id="colRankReason" text="Evaluation Rationale" prefWidth="300"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="Run comparison to view candidate ranking scores." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

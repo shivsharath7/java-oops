@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.AnomaliesController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Security, Alerts &amp; Parking Anomaly Detection" styleClass="page-title"/>
+                <Label text="Automated consistency scanning across physical database records to detect ghost sessions, expired holds, and conflicting slots" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🔍 Run Consistency Scan Now" styleClass="btn-primary" onAction="#handleRunScan"/>
+            <Button text="🔄 Refresh" styleClass="btn-secondary" onAction="#loadAnomalies"/>
+        </HBox>
+
+        <!-- Filter bar -->
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="panel-card" style="-fx-padding: 10 16;">
+            <Label text="Filter Status:" styleClass="form-label"/>
+            <ComboBox fx:id="comboStatusFilter" prefWidth="160" onAction="#loadAnomalies"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblScanSummary" text="Ready to scan" styleClass="kpi-subtext" style="-fx-font-weight: bold;"/>
+        </HBox>
+
+        <!-- Main Anomalies Table -->
+        <VBox styleClass="panel-card" spacing="12">
+            <TableView fx:id="tableAnomalies" prefHeight="380" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colSeverity" text="Severity" prefWidth="90"/>
+                    <TableColumn fx:id="colType" text="Anomaly Type" prefWidth="190"/>
+                    <TableColumn fx:id="colVehicle" text="Vehicle" prefWidth="110"/>
+                    <TableColumn fx:id="colSlot" text="Slot" prefWidth="80"/>
+                    <TableColumn fx:id="colDesc" text="Description" prefWidth="320"/>
+                    <TableColumn fx:id="colResolution" text="Suggested Resolution" prefWidth="250"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                    <TableColumn fx:id="colDetectedAt" text="Detected At" prefWidth="140"/>
+                </columns>
+                <placeholder>
+                    <Label text="No anomalies detected. System is completely consistent." styleClass="text-muted"/>
+                </placeholder>
+            </TableView>
+
+            <!-- Action Controls -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="btnAcknowledge" text="👁️ Acknowledge Alert" styleClass="btn-secondary" onAction="#handleAcknowledge"/>
+                <Button fx:id="btnResolve" text="✅ Mark Resolved" styleClass="btn-success" onAction="#handleResolve"/>
+                <Button fx:id="btnIgnore" text="⚠️ Ignore (False Positive)" styleClass="btn-secondary" onAction="#handleIgnore"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblActionStatus" text="" style="-fx-font-size: 12px;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Explanation of 8 Monitored Anomaly Types -->
+        <VBox styleClass="panel-card" spacing="10">
+            <Label text="Active Consistency Verification Checks" styleClass="section-title"/>
+            <GridPane hgap="16" vgap="8">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <Label text="1. Duplicate active sessions for same vehicle" styleClass="text-muted" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="2. Slot marked occupied without active parking record" styleClass="text-muted" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Label text="3. Active parking record on slot marked available" styleClass="text-muted" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label text="4. Reservation expired but remaining active in database" styleClass="text-muted" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+
+                <Label text="5. Unusually long parking session exceeding configured threshold" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Label text="6. EV Charging bay occupied beyond planned completion" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="7. Inconsistent payment / completed status with pending fee" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="8. Conflicting slot assignment (multiple records on same bay)" styleClass="text-muted" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </GridPane>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

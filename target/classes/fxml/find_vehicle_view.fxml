@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.FindVehicleController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Find My Parked Vehicle &amp; Indoor Exit Route" styleClass="page-title"/>
+                <Label text="Locate parked vehicle across complex floors and compute step-by-step navigation path to nearest exit gate" styleClass="page-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Vehicle Locator Panel -->
+            <VBox styleClass="panel-card" prefWidth="420" minWidth="380" spacing="14">
+                <Label text="Vehicle Locator Search" styleClass="section-title"/>
+
+                <HBox spacing="8">
+                    <TextField fx:id="txtLocatorQuery" promptText="Enter Vehicle Plate or Ticket ID" HBox.hgrow="ALWAYS" onAction="#handleLocateVehicle"/>
+                    <Button text="🔍 Locate" styleClass="btn-primary" onAction="#handleLocateVehicle"/>
+                </HBox>
+                <Label fx:id="lblLocatorStatus" text="Try: KA05EV8821 or SP-2026-0801" styleClass="kpi-subtext"/>
+
+                <!-- Vehicle Info Card -->
+                <VBox spacing="8" style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="VEHICLE LOCATION PARTICULARS" styleClass="kpi-label"/>
+                    <HBox><Label text="Registration Plate: " styleClass="form-label"/><Label fx:id="lblLocPlate" text="--" style="-fx-font-weight: bold; -fx-text-fill: #38bdf8;"/></HBox>
+                    <HBox><Label text="Assigned Bay: " styleClass="form-label"/><Label fx:id="lblLocSlot" text="--" style="-fx-font-weight: bold; -fx-text-fill: #10b981;"/></HBox>
+                    <HBox><Label text="Floor &amp; Zone: " styleClass="form-label"/><Label fx:id="lblLocFloorZone" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Ticket ID: " styleClass="form-label"/><Label fx:id="lblLocTicket" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Entry Timestamp: " styleClass="form-label"/><Label fx:id="lblLocTime" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Current Duration: " styleClass="form-label"/><Label fx:id="lblLocDuration" text="--" style="-fx-font-weight: bold; -fx-text-fill: #f59e0b;"/></HBox>
+                </VBox>
+
+                <!-- Exit Destination Selector -->
+                <VBox spacing="6">
+                    <Label text="Destination Exit Gate" styleClass="form-label"/>
+                    <ComboBox fx:id="comboExits" maxWidth="Infinity" onAction="#handleRecalculateRoute"/>
+                </VBox>
+
+                <!-- Exit Congestion Advice Box -->
+                <VBox spacing="6" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="EXIT CONGESTION ADVISOR" styleClass="kpi-label" style="-fx-text-fill: #38bdf8;"/>
+                    <Label fx:id="lblExitCongestionAdvice" text="Locate vehicle to evaluate peak hours and exit gate queue delays." wrapText="true" styleClass="text-muted" style="-fx-font-size: 12px;"/>
+                </VBox>
+            </VBox>
+
+            <!-- Right: Turn-by-Turn Route Navigation Instructions -->
+            <VBox HBox.hgrow="ALWAYS" spacing="16">
+                <VBox styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="2">
+                            <Label text="Turn-by-Turn Navigation Instructions" styleClass="section-title"/>
+                            <Label text="Indoor path computed via Dijkstra's shortest path graph algorithm" styleClass="section-subtitle"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <VBox alignment="CENTER_RIGHT" spacing="2">
+                            <Label fx:id="lblRouteDistance" text="-- meters" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #38bdf8;"/>
+                            <Label fx:id="lblRouteWalkTime" text="Estimated walking time: -- mins" styleClass="kpi-subtext"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Instruction Steps ListView -->
+                    <ListView fx:id="listRouteSteps" prefHeight="380" styleClass="table-view"/>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

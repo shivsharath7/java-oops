@@ -1,0 +1,459 @@
+/* ==========================================================================
+   SmartPark — Modern Enterprise Dark Theme CSS
+   ========================================================================== */
+
+.root {
+    -fx-background-color: #0f172a;
+    -fx-font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    -fx-text-fill: #f8fafc;
+}
+
+.main-container {
+    -fx-background-color: #0f172a;
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar Navigation
+   -------------------------------------------------------------------------- */
+.sidebar {
+    -fx-background-color: #111827;
+    -fx-border-color: #1f2937;
+    -fx-border-width: 0 1 0 0;
+}
+
+.brand-icon-box {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 10;
+    -fx-padding: 8 12;
+}
+
+.brand-icon {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+}
+
+.brand-title {
+    -fx-text-fill: #38bdf8;
+    -fx-font-size: 19px;
+    -fx-font-weight: 800;
+}
+
+.brand-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+
+.sidebar-separator {
+    -fx-background-color: #1f2937;
+    -fx-padding: 0;
+    -fx-pref-height: 1;
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 9 14;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #f8fafc;
+}
+
+.nav-btn-active {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.sidebar-footer-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+}
+
+/* --------------------------------------------------------------------------
+   Top Navigation Header
+   -------------------------------------------------------------------------- */
+.top-header {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 12 24;
+}
+
+.header-time-badge {
+    -fx-background-color: #0f172a;
+    -fx-padding: 6 12;
+    -fx-background-radius: 6;
+    -fx-border-color: #334155;
+    -fx-border-radius: 6;
+    -fx-text-fill: #38bdf8;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.user-badge {
+    -fx-background-color: #0f172a;
+    -fx-padding: 5 12;
+    -fx-background-radius: 20;
+    -fx-border-color: #334155;
+    -fx-border-radius: 20;
+}
+
+.user-name {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.user-role {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Main Content Area & Headings
+   -------------------------------------------------------------------------- */
+.content-scrollpane {
+    -fx-background-color: transparent;
+    -fx-background: #0f172a;
+}
+
+.content-scrollpane > .viewport {
+    -fx-background-color: #0f172a;
+}
+
+.content-area {
+    -fx-background-color: #0f172a;
+}
+
+.page-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+
+.page-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+}
+
+.section-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.section-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   Cards and Panels
+   -------------------------------------------------------------------------- */
+.panel-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+    -fx-padding: 18;
+    -fx-border-color: #334155;
+    -fx-border-radius: 12;
+}
+
+.kpi-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-border-color: #334155;
+    -fx-border-radius: 12;
+}
+
+.kpi-label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 0.5px;
+}
+
+.kpi-value {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+}
+
+.kpi-subtext {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons & Form Controls
+   -------------------------------------------------------------------------- */
+.btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 9 18;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-secondary {
+    -fx-background-color: #334155;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #475569;
+}
+
+.btn-success {
+    -fx-background-color: #059669;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 9 18;
+    -fx-cursor: hand;
+}
+
+.btn-success:hover {
+    -fx-background-color: #047857;
+}
+
+.btn-danger {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #b91c1c;
+}
+
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: #f8fafc;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #38bdf8;
+    -fx-background-color: #111827;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #f8fafc;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+}
+
+.form-label {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Badges and Status Colors
+   -------------------------------------------------------------------------- */
+.badge-available {
+    -fx-background-color: rgba(16, 185, 129, 0.2);
+    -fx-text-fill: #10b981;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 6;
+}
+
+.badge-occupied {
+    -fx-background-color: rgba(239, 68, 68, 0.2);
+    -fx-text-fill: #ef4444;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 6;
+}
+
+.badge-reserved {
+    -fx-background-color: rgba(245, 158, 11, 0.2);
+    -fx-text-fill: #f59e0b;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 6;
+}
+
+.badge-charging {
+    -fx-background-color: rgba(59, 130, 246, 0.2);
+    -fx-text-fill: #3b82f6;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 6;
+}
+
+.badge-maintenance {
+    -fx-background-color: rgba(100, 116, 139, 0.2);
+    -fx-text-fill: #94a3b8;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 6;
+}
+
+.text-emerald { -fx-text-fill: #10b981; }
+.text-rose { -fx-text-fill: #ef4444; }
+.text-amber { -fx-text-fill: #f59e0b; }
+.text-sky { -fx-text-fill: #38bdf8; }
+.text-muted { -fx-text-fill: #94a3b8; }
+
+/* --------------------------------------------------------------------------
+   Parking Slot Map Grid Elements
+   -------------------------------------------------------------------------- */
+.slot-tile {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 8;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+    -fx-pref-width: 95;
+    -fx-pref-height: 85;
+}
+
+.slot-tile:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(56, 189, 248, 0.4), 8, 0, 0, 0);
+}
+
+.slot-tile-available {
+    -fx-border-color: #10b981;
+    -fx-background-color: rgba(16, 185, 129, 0.1);
+}
+
+.slot-tile-occupied {
+    -fx-border-color: #ef4444;
+    -fx-background-color: rgba(239, 68, 68, 0.1);
+}
+
+.slot-tile-reserved {
+    -fx-border-color: #f59e0b;
+    -fx-background-color: rgba(245, 158, 11, 0.1);
+}
+
+.slot-tile-charging {
+    -fx-border-color: #3b82f6;
+    -fx-background-color: rgba(59, 130, 246, 0.1);
+}
+
+.slot-tile-maintenance {
+    -fx-border-color: #64748b;
+    -fx-background-color: rgba(100, 116, 139, 0.1);
+}
+
+.slot-number-label {
+    -fx-font-weight: 800;
+    -fx-font-size: 13px;
+    -fx-text-fill: #ffffff;
+}
+
+.slot-type-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   Table Views
+   -------------------------------------------------------------------------- */
+.table-view {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 8;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #111827;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cbd5e1;
+    -fx-padding: 8;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #f1f5f9;
+    -fx-font-size: 12px;
+    -fx-padding: 6;
+}
+
+.table-row-cell {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #182234;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Dialog & Receipt Styling
+   -------------------------------------------------------------------------- */
+.receipt-container {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #334155;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.receipt-text {
+    -fx-fill: #38bdf8;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    -fx-font-size: 13px;
+}

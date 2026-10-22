@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.VehicleEntryController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Vehicle Check-In &amp; Smart Allocation" styleClass="page-title"/>
+                <Label text="Register incoming vehicle, evaluate optimal slot using algorithm, and issue digital parking ticket" styleClass="page-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Entry Form Panel -->
+            <VBox styleClass="panel-card" prefWidth="440" minWidth="400" spacing="14">
+                <Label text="Vehicle Check-In Details" styleClass="section-title"/>
+
+                <VBox spacing="4">
+                    <Label text="Vehicle Registration Number *" styleClass="form-label"/>
+                    <TextField fx:id="txtPlate" promptText="e.g. KA05EV8821, DL08CK1234" onKeyReleased="#handlePlateInput"/>
+                    <Label fx:id="lblPlateValidation" text="Standard alphanumeric format (4-12 characters)" styleClass="kpi-subtext"/>
+                </VBox>
+
+                <HBox spacing="12">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Vehicle Category *" styleClass="form-label"/>
+                        <ComboBox fx:id="comboCategory" maxWidth="Infinity" onAction="#handleCategoryChange"/>
+                    </VBox>
+
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Preferred Exit Route" styleClass="form-label"/>
+                        <ComboBox fx:id="comboExit" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="12">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Driver / Customer Name" styleClass="form-label"/>
+                        <TextField fx:id="txtName" promptText="Optional customer name"/>
+                    </VBox>
+
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Contact Number" styleClass="form-label"/>
+                        <TextField fx:id="txtPhone" promptText="Optional 10-digit mobile"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="8" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="SPECIAL ALLOCATION PREFERENCES" styleClass="kpi-label"/>
+                    <CheckBox fx:id="chkNeedsCharging" text="⚡ EV Charging Bay Required (Must have active charging point)" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;"/>
+                    <CheckBox fx:id="chkNeedsAccessible" text="♿ Accessible / Step-Free Access Required (Proximity priority)" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Operational Notes" styleClass="form-label"/>
+                    <TextField fx:id="txtNotes" promptText="Optional operator notes"/>
+                </VBox>
+
+                <HBox spacing="10">
+                    <Button text="🧠 Run Smart Allocation" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#handleRunAllocation"/>
+                    <Button text="✅ Confirm Entry &amp; Print Ticket" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#handleConfirmEntry"/>
+                </HBox>
+
+                <Label fx:id="lblFormError" text="" wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #ef4444;"/>
+            </VBox>
+
+            <!-- Right: Algorithm Recommendation & Ticket Preview -->
+            <VBox HBox.hgrow="ALWAYS" spacing="16">
+                <!-- Recommendation Explanation Box -->
+                <VBox fx:id="boxRecommendation" styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Algorithm Recommendation" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblRecommendedSlotBadge" text="SLOT: --" style="-fx-font-size: 14px; -fx-font-weight: 800; -fx-text-fill: #10b981;"/>
+                    </HBox>
+
+                    <VBox style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;" spacing="6">
+                        <Label fx:id="lblRecommendedSlotInfo" text="Select vehicle category and click 'Run Smart Allocation' to evaluate slots." style="-fx-font-size: 13px; -fx-text-fill: #f8fafc; -fx-font-weight: bold;"/>
+                        <Label fx:id="lblRecommendationExplanation" text="Algorithm evaluates live zone congestion, entrance walking distance, exit proximity, and vehicle compatibility." wrapText="true" styleClass="text-muted" style="-fx-font-size: 12px;"/>
+                    </VBox>
+
+                    <!-- Top 3 Comparison Table -->
+                    <Label text="Top Ranked Candidate Comparison" styleClass="kpi-label"/>
+                    <TableView fx:id="tableCandidates" prefHeight="140" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colSlot" text="Slot" prefWidth="90"/>
+                            <TableColumn fx:id="colFloor" text="Floor / Zone" prefWidth="130"/>
+                            <TableColumn fx:id="colScore" text="Total Score" prefWidth="90"/>
+                            <TableColumn fx:id="colCongestionScore" text="Congestion" prefWidth="90"/>
+                            <TableColumn fx:id="colDistanceScore" text="Entrance" prefWidth="90"/>
+                            <TableColumn fx:id="colReason" text="Ranking Rationale" prefWidth="260"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="Run allocation to view candidate rankings." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- Digital Ticket Preview Card -->
+                <VBox fx:id="boxTicketCard" styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Digital Parking Ticket" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="SMARTPARK GATE PASS" styleClass="kpi-label" style="-fx-text-fill: #38bdf8;"/>
+                    </HBox>
+
+                    <VBox styleClass="receipt-container" spacing="4">
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                        <Label text="             SMARTPARK PARKING MANAGEMENT SYSTEM               " styleClass="receipt-text" style="-fx-font-weight: bold;"/>
+                        <Label text="                     OFFICIAL ENTRY TICKET                      " styleClass="receipt-text"/>
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                        <HBox><Label text="TICKET ID:       " styleClass="receipt-text"/><Label fx:id="lblTicketId" text="SP-XXXXXX" styleClass="receipt-text" style="-fx-font-weight: bold;"/></HBox>
+                        <HBox><Label text="VEHICLE NO:      " styleClass="receipt-text"/><Label fx:id="lblTicketPlate" text="--" styleClass="receipt-text" style="-fx-font-weight: bold;"/></HBox>
+                        <HBox><Label text="CATEGORY:        " styleClass="receipt-text"/><Label fx:id="lblTicketType" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="ASSIGNED SLOT:   " styleClass="receipt-text"/><Label fx:id="lblTicketSlot" text="--" styleClass="receipt-text" style="-fx-font-weight: bold; -fx-text-fill: #10b981;"/></HBox>
+                        <HBox><Label text="FLOOR &amp; ZONE:    " styleClass="receipt-text"/><Label fx:id="lblTicketFloorZone" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="ENTRY TIMESTAMP: " styleClass="receipt-text"/><Label fx:id="lblTicketTime" text="--" styleClass="receipt-text"/></HBox>
+                        <HBox><Label text="OPERATOR:        " styleClass="receipt-text"/><Label fx:id="lblTicketOperator" text="System" styleClass="receipt-text"/></HBox>
+                        <Label text="----------------------------------------------------------------" styleClass="receipt-text"/>
+                        <Label text="TARIFF: First Hour standard rate, extra hrs billed hourly.     " styleClass="receipt-text"/>
+                        <Label text="Please retain this ticket to scan at the exit cashier terminal. " styleClass="receipt-text"/>
+                        <Label text="================================================================" styleClass="receipt-text"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

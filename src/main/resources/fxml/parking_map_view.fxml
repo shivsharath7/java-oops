@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.ParkingMapController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="16" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header Banner -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Interactive Multi-Floor Parking Map" styleClass="page-title"/>
+                <Label text="Live graphical slot grid with real-time status colors, vehicle assignments, and operator actions" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🔄 Refresh Map" styleClass="btn-secondary" onAction="#loadSlots"/>
+        </HBox>
+
+        <!-- Filter Controls Bar -->
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="panel-card" style="-fx-padding: 12 16;">
+            <VBox spacing="3">
+                <Label text="Floor" styleClass="form-label"/>
+                <ComboBox fx:id="comboFloorFilter" prefWidth="150" onAction="#applyFilters"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Vehicle Category" styleClass="form-label"/>
+                <ComboBox fx:id="comboTypeFilter" prefWidth="160" onAction="#applyFilters"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Status" styleClass="form-label"/>
+                <ComboBox fx:id="comboStatusFilter" prefWidth="150" onAction="#applyFilters"/>
+            </VBox>
+
+            <CheckBox fx:id="chkChargingOnly" text="⚡ EV Charger Only" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;" onAction="#applyFilters">
+                <HBox.margin><Insets top="18"/></HBox.margin>
+            </CheckBox>
+
+            <CheckBox fx:id="chkAccessibleOnly" text="♿ Accessible Only" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;" onAction="#applyFilters">
+                <HBox.margin><Insets top="18"/></HBox.margin>
+            </CheckBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Status Color Legend -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <HBox.margin><Insets top="14"/></HBox.margin>
+                <Label text="● Available" style="-fx-text-fill: #10b981; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+                <Label text="● Occupied" style="-fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+                <Label text="● Reserved" style="-fx-text-fill: #f59e0b; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+                <Label text="● EV Charging" style="-fx-text-fill: #3b82f6; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+                <Label text="● Maintenance" style="-fx-text-fill: #64748b; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+            </HBox>
+        </HBox>
+
+        <!-- Main Map Area: Left Slot Grid, Right Details Drawer -->
+        <HBox spacing="16">
+            <!-- Scrollable Slot Tiles Grid -->
+            <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="12" minHeight="500">
+                <HBox alignment="CENTER_LEFT">
+                    <Label fx:id="lblGridSummary" text="Showing 58 Parking Slots" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Click any slot to inspect details or execute actions" styleClass="kpi-subtext"/>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="content-scrollpane" prefHeight="480">
+                    <FlowPane fx:id="slotFlowPane" hgap="12" vgap="12" style="-fx-background-color: transparent;">
+                        <padding>
+                            <Insets top="8" right="8" bottom="8" left="8"/>
+                        </padding>
+                    </FlowPane>
+                </ScrollPane>
+            </VBox>
+
+            <!-- Slot Inspector & Operator Action Panel -->
+            <VBox fx:id="slotDetailsDrawer" styleClass="panel-card" prefWidth="350" minWidth="320" spacing="14">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Slot Inspector" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblSlotBadge" text="AVAILABLE" styleClass="badge-available"/>
+                </HBox>
+
+                <VBox spacing="8" style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <HBox><Label text="Slot Number: " styleClass="form-label"/><Label fx:id="lblDetailSlotNumber" text="--" style="-fx-font-weight: bold; -fx-text-fill: #f8fafc;"/></HBox>
+                    <HBox><Label text="Floor &amp; Zone: " styleClass="form-label"/><Label fx:id="lblDetailFloorZone" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Compatibility: " styleClass="form-label"/><Label fx:id="lblDetailType" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Proximity: " styleClass="form-label"/><Label fx:id="lblDetailProximity" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="EV Charger: " styleClass="form-label"/><Label fx:id="lblDetailCharger" text="--" styleClass="text-muted"/></HBox>
+                    <HBox><Label text="Accessible: " styleClass="form-label"/><Label fx:id="lblDetailAccessible" text="--" styleClass="text-muted"/></HBox>
+                </VBox>
+
+                <!-- Active Vehicle / Session Card -->
+                <VBox fx:id="boxVehicleSession" spacing="6" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="ACTIVE PARKING SESSION" styleClass="kpi-label"/>
+                    <Label fx:id="lblSessionVehicle" text="No vehicle parked" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #f8fafc;"/>
+                    <Label fx:id="lblSessionTicket" text="Ticket: --" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+                    <Label fx:id="lblSessionDuration" text="Entry: --" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+                </VBox>
+
+                <!-- Operator Actions -->
+                <VBox spacing="8">
+                    <Label text="OPERATOR ACTIONS" styleClass="kpi-label"/>
+                    <Button fx:id="btnParkHere" text="🚗 Park Vehicle in this Slot" styleClass="btn-primary" maxWidth="Infinity" onAction="#handleActionParkHere"/>
+                    <Button fx:id="btnReserveSlot" text="⏳ Hold / Reserve Slot" styleClass="btn-secondary" maxWidth="Infinity" onAction="#handleActionReserveSlot"/>
+                    <Button fx:id="btnToggleMaintenance" text="🛠️ Toggle Maintenance Mode" styleClass="btn-secondary" maxWidth="Infinity" onAction="#handleActionToggleMaintenance"/>
+                    <Button fx:id="btnFreeSlot" text="🔓 Free / Reset Slot to Available" styleClass="btn-danger" maxWidth="Infinity" onAction="#handleActionFreeSlot"/>
+                </VBox>
+
+                <Label fx:id="lblActionFeedback" text="" wrapText="true" style="-fx-font-size: 12px;"/>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

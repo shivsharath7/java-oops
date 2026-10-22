@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.AdminSettingsController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="System Administration &amp; Policy Settings" styleClass="page-title"/>
+                <Label text="Configure dynamic parking tariffs, traffic congestion thresholds, slot layouts, and alternative parking facilities" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="⚠️ Re-Seed Demo Data" styleClass="btn-danger" onAction="#handleResetDemoData"/>
+            <Button text="🔄 Refresh Settings" styleClass="btn-secondary" onAction="#loadAllSettings"/>
+        </HBox>
+
+        <Label fx:id="lblAdminFeedback" text="" style="-fx-font-size: 13px; -fx-font-weight: bold;"/>
+
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="panel-card" style="-fx-padding: 8;">
+            <!-- Tab 1: Tariffs & Pricing Matrix -->
+            <Tab text="💵 Tariff Rates &amp; Grace Periods">
+                <VBox spacing="14">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <Label text="Vehicle Tariff Matrix" styleClass="section-title"/>
+                    <TableView fx:id="tableTariffs" prefHeight="200" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colTariffType" text="Vehicle Category" prefWidth="150"/>
+                            <TableColumn fx:id="colTariffFirstHr" text="First Hour Rate" prefWidth="120"/>
+                            <TableColumn fx:id="colTariffExtraHr" text="Extra Hour Rate" prefWidth="120"/>
+                            <TableColumn fx:id="colTariffDailyMax" text="Daily Max Cap" prefWidth="120"/>
+                            <TableColumn fx:id="colTariffEvSurcharge" text="EV Surcharge/hr" prefWidth="120"/>
+                            <TableColumn fx:id="colTariffGrace" text="Grace Period (Mins)" prefWidth="130"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Edit Tariff Inputs -->
+                    <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8;">
+                        <VBox spacing="2">
+                            <Label text="Category" styleClass="form-label"/>
+                            <ComboBox fx:id="comboTariffEditType" prefWidth="140" onAction="#handleSelectTariffCategory"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="1st Hr Rate (₹)" styleClass="form-label"/>
+                            <TextField fx:id="txtEditFirstHr" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="Extra Hr (₹)" styleClass="form-label"/>
+                            <TextField fx:id="txtEditExtraHr" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="Daily Cap (₹)" styleClass="form-label"/>
+                            <TextField fx:id="txtEditDailyCap" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="EV Surcharge (₹)" styleClass="form-label"/>
+                            <TextField fx:id="txtEditEvSurcharge" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="Grace (Mins)" styleClass="form-label"/>
+                            <TextField fx:id="txtEditGraceMins" prefWidth="90"/>
+                        </VBox>
+                        <Button text="💾 Save Tariff" styleClass="btn-primary" onAction="#handleSaveTariff" style="-fx-alignment: BOTTOM-CENTER;">
+                            <HBox.margin><Insets top="16"/></HBox.margin>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 2: System Thresholds & Peak Hours -->
+            <Tab text="⚙️ Operational Policies &amp; Thresholds">
+                <VBox spacing="14">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <GridPane hgap="16" vgap="12" maxWidth="750">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <VBox spacing="3" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Active Slot Allocation Strategy" styleClass="form-label"/>
+                            <ComboBox fx:id="comboActiveStrategy" maxWidth="Infinity"/>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Temporary Hold Duration (Minutes)" styleClass="form-label"/>
+                            <TextField fx:id="txtSettingHoldMinutes"/>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Low Congestion Upper Threshold (%)" styleClass="form-label"/>
+                            <TextField fx:id="txtSettingLowCong"/>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="High Congestion Lower Threshold (%)" styleClass="form-label"/>
+                            <TextField fx:id="txtSettingHighCong"/>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <Label text="Morning Peak Period (e.g. 08:30 - 10:30)" styleClass="form-label"/>
+                            <HBox spacing="6">
+                                <TextField fx:id="txtPeakAmStart" promptText="08:30" HBox.hgrow="ALWAYS"/>
+                                <Label text="to" styleClass="text-muted" style="-fx-padding: 8 0;"/>
+                                <TextField fx:id="txtPeakAmEnd" promptText="10:30" HBox.hgrow="ALWAYS"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label text="Evening Peak Period (e.g. 17:00 - 20:00)" styleClass="form-label"/>
+                            <HBox spacing="6">
+                                <TextField fx:id="txtPeakPmStart" promptText="17:00" HBox.hgrow="ALWAYS"/>
+                                <Label text="to" styleClass="text-muted" style="-fx-padding: 8 0;"/>
+                                <TextField fx:id="txtPeakPmEnd" promptText="20:00" HBox.hgrow="ALWAYS"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="3" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                            <Label text="Max Allowed Stay (Hours before anomaly)" styleClass="form-label"/>
+                            <TextField fx:id="txtSettingMaxStay"/>
+                        </VBox>
+                    </GridPane>
+
+                    <Button text="💾 Save Operational Settings" styleClass="btn-primary" onAction="#handleSaveSettings"/>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 3: Parking Slot Layout Management -->
+            <Tab text="🅿️ Slot Layout Inventory">
+                <VBox spacing="14">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Label text="Multi-Floor Slot Management" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="➕ Add New Slot" styleClass="btn-primary" onAction="#handleAddSlot"/>
+                        <Button text="🛠️ Toggle Selected Maintenance" styleClass="btn-secondary" onAction="#handleToggleSlotMaintenance"/>
+                    </HBox>
+
+                    <TableView fx:id="tableAdminSlots" prefHeight="340" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colAdminSlotNum" text="Slot Number" prefWidth="120"/>
+                            <TableColumn fx:id="colAdminFloor" text="Floor" prefWidth="130"/>
+                            <TableColumn fx:id="colAdminZone" text="Zone" prefWidth="100"/>
+                            <TableColumn fx:id="colAdminType" text="Vehicle Type" prefWidth="120"/>
+                            <TableColumn fx:id="colAdminStatus" text="Status" prefWidth="110"/>
+                            <TableColumn fx:id="colAdminEntrance" text="Near Entrance" prefWidth="110"/>
+                            <TableColumn fx:id="colAdminCharger" text="EV Charger" prefWidth="100"/>
+                            <TableColumn fx:id="colAdminAccessible" text="Accessible" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 4: Alternative Facilities (Feature 12) -->
+            <Tab text="🏢 Nearby Alternative Facilities">
+                <VBox spacing="14">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <Label text="Offsite Spillover Facilities (Offered when parking is full)" styleClass="section-title"/>
+                    <TableView fx:id="tableFacilities" prefHeight="320" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colFacName" text="Facility Name" prefWidth="200"/>
+                            <TableColumn fx:id="colFacAddress" text="Address" prefWidth="240"/>
+                            <TableColumn fx:id="colFacCap" text="Total Cap" prefWidth="90"/>
+                            <TableColumn fx:id="colFacAvail" text="Est. Available" prefWidth="100"/>
+                            <TableColumn fx:id="colFacDist" text="Distance (km)" prefWidth="100"/>
+                            <TableColumn fx:id="colFacPhone" text="Contact" prefWidth="140"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+        </TabPane>
+
+    </VBox>
+</ScrollPane>

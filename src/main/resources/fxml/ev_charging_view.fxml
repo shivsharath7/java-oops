@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.EvChargingController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="EV Fast-Charging Bays &amp; Session Management" styleClass="page-title"/>
+                <Label text="Manage electric vehicle charging hardware, monitor active power delivery sessions, and flag overstay delays" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🔄 Refresh Stations" styleClass="btn-secondary" onAction="#loadData"/>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Start Charging Session Form -->
+            <VBox styleClass="panel-card" prefWidth="380" minWidth="340" spacing="12">
+                <Label text="Start EV Charging Session" styleClass="section-title"/>
+
+                <VBox spacing="4">
+                    <Label text="Select Charging Station *" styleClass="form-label"/>
+                    <ComboBox fx:id="comboChargers" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Vehicle Registration Plate *" styleClass="form-label"/>
+                    <TextField fx:id="txtEvPlate" promptText="e.g. KA05EV8821"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Planned Charging Duration (Mins) *" styleClass="form-label"/>
+                    <ComboBox fx:id="comboDuration" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="4" style="-fx-background-color: #0f172a; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+                    <Label text="COMMERCIAL TARIFF" styleClass="kpi-label"/>
+                    <Label text="Electricity Rate: ₹7.50 / kWh" styleClass="text-muted" style="-fx-font-size: 12px;"/>
+                    <Label text="Overstay Surcharge: ₹50 / hr after scheduled completion" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+                </VBox>
+
+                <Button text="⚡ Start Charging Session" styleClass="btn-primary" maxWidth="Infinity" onAction="#handleStartCharging"/>
+                <Label fx:id="lblChargingFormStatus" text="" wrapText="true" style="-fx-font-size: 12px;"/>
+            </VBox>
+
+            <!-- Right: Active Charging Sessions & Bays Overview -->
+            <VBox HBox.hgrow="ALWAYS" spacing="14">
+                <!-- Active Sessions Table -->
+                <VBox styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Active Charging Sessions" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Select session to stop charging" styleClass="kpi-subtext"/>
+                    </HBox>
+
+                    <TableView fx:id="tableSessions" prefHeight="260" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colChargerCode" text="Charger Bay" prefWidth="120"/>
+                            <TableColumn fx:id="colVehicle" text="Vehicle Plate" prefWidth="120"/>
+                            <TableColumn fx:id="colSlot" text="Slot" prefWidth="80"/>
+                            <TableColumn fx:id="colStartTime" text="Started At" prefWidth="120"/>
+                            <TableColumn fx:id="colEstEnd" text="Scheduled End" prefWidth="120"/>
+                            <TableColumn fx:id="colKwh" text="Est. kWh" prefWidth="90"/>
+                            <TableColumn fx:id="colFee" text="Fee (INR)" prefWidth="90"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="110"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No active charging sessions." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button fx:id="btnStopCharging" text="🛑 Stop Charging &amp; Settle Power Fee" styleClass="btn-danger" onAction="#handleStopCharging"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblSessionActionFeedback" text="" style="-fx-font-size: 12px;"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Hardware Bay Status Cards Grid -->
+                <VBox styleClass="panel-card" spacing="10">
+                    <Label text="All EV Charging Bay Statuses" styleClass="section-title"/>
+                    <FlowPane fx:id="flowChargerBays" hgap="12" vgap="12" style="-fx-background-color: transparent;"/>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

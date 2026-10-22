@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.ReservationController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Temporary Slot Reservations &amp; Auto-Release" styleClass="page-title"/>
+                <Label text="Place timed holds on parking bays with automatic background expiry release and arrival check-in" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🧹 Sweep Expired Holds" styleClass="btn-secondary" onAction="#handleSweepExpired"/>
+            <Button text="🔄 Refresh" styleClass="btn-secondary" onAction="#loadReservations"/>
+        </HBox>
+
+        <HBox spacing="18">
+            <!-- Left: Create Reservation Form -->
+            <VBox styleClass="panel-card" prefWidth="380" minWidth="340" spacing="12">
+                <Label text="Create New Temporary Hold" styleClass="section-title"/>
+
+                <VBox spacing="4">
+                    <Label text="Vehicle Registration Number *" styleClass="form-label"/>
+                    <TextField fx:id="txtResPlate" promptText="e.g. DL01XY9988"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Vehicle Category *" styleClass="form-label"/>
+                    <ComboBox fx:id="comboResType" maxWidth="Infinity" onAction="#handleCategoryChanged"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Select Available Slot *" styleClass="form-label"/>
+                    <ComboBox fx:id="comboResSlot" maxWidth="Infinity"/>
+                </VBox>
+
+                <HBox spacing="10">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Customer Name" styleClass="form-label"/>
+                        <TextField fx:id="txtResName" promptText="Driver name"/>
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Contact Number" styleClass="form-label"/>
+                        <TextField fx:id="txtResPhone" promptText="Mobile number"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="4">
+                    <Label text="Hold Duration (Minutes)" styleClass="form-label"/>
+                    <ComboBox fx:id="comboHoldMinutes" maxWidth="Infinity"/>
+                </VBox>
+
+                <Button text="⏳ Lock &amp; Reserve Slot" styleClass="btn-primary" maxWidth="Infinity" onAction="#handleCreateReservation"/>
+                <Label fx:id="lblResFormStatus" text="" wrapText="true" style="-fx-font-size: 12px;"/>
+            </VBox>
+
+            <!-- Right: Reservations Table & Management -->
+            <VBox HBox.hgrow="ALWAYS" spacing="14">
+                <VBox styleClass="panel-card" spacing="12">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="All Reservations" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Select a reservation below to check-in or cancel" styleClass="kpi-subtext"/>
+                    </HBox>
+
+                    <TableView fx:id="tableReservations" prefHeight="380" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colResCode" text="Hold Code" prefWidth="120"/>
+                            <TableColumn fx:id="colResPlate" text="Vehicle Plate" prefWidth="120"/>
+                            <TableColumn fx:id="colResSlot" text="Slot" prefWidth="80"/>
+                            <TableColumn fx:id="colResFloor" text="Floor / Zone" prefWidth="130"/>
+                            <TableColumn fx:id="colResCustomer" text="Customer" prefWidth="130"/>
+                            <TableColumn fx:id="colResExpires" text="Expires At" prefWidth="140"/>
+                            <TableColumn fx:id="colResStatus" text="Status" prefWidth="100"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No active reservations found." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+
+                    <!-- Action Bar -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button fx:id="btnCheckIn" text="🚗 Check In Vehicle (Convert to Parking Session)" styleClass="btn-success" onAction="#handleCheckIn"/>
+                        <Button fx:id="btnCancel" text="❌ Cancel Reservation" styleClass="btn-danger" onAction="#handleCancelReservation"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblTableActionStatus" text="" style="-fx-font-size: 12px;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

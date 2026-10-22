@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.smartpark.controller.LoginDialogController"
+      spacing="16" prefWidth="420" styleClass="panel-card" stylesheets="@../css/style.css"
+      style="-fx-background-color: #0f172a; -fx-padding: 24;">
+
+    <HBox alignment="CENTER" spacing="12">
+        <StackPane styleClass="brand-icon-box">
+            <Label text="P" styleClass="brand-icon"/>
+        </StackPane>
+        <VBox spacing="1">
+            <Label text="SmartPark Operator Login" styleClass="brand-title"/>
+            <Label text="Intelligent Parking Management System" styleClass="brand-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <Separator styleClass="sidebar-separator"/>
+
+    <VBox spacing="4">
+        <Label text="Username" styleClass="form-label"/>
+        <TextField fx:id="txtUsername" promptText="e.g. admin or operator" text="admin"/>
+    </VBox>
+
+    <VBox spacing="4">
+        <Label text="Password" styleClass="form-label"/>
+        <PasswordField fx:id="txtPassword" promptText="Enter password" text="admin123" onAction="#handleLogin"/>
+    </VBox>
+
+    <Label fx:id="lblLoginError" text="" wrapText="true" style="-fx-text-fill: #ef4444; -fx-font-size: 12px;"/>
+
+    <Button text="🔐 Sign In to Console" styleClass="btn-primary" maxWidth="Infinity" onAction="#handleLogin"/>
+
+    <VBox spacing="4" style="-fx-background-color: #1e293b; -fx-padding: 10; -fx-background-radius: 6; -fx-border-color: #334155; -fx-border-radius: 6;">
+        <Label text="DEMONSTRATION CREDENTIALS" styleClass="kpi-label"/>
+        <Label text="Administrator: admin / admin123" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+        <Label text="Shift Operator: operator / admin123" styleClass="text-muted" style="-fx-font-size: 11px;"/>
+    </VBox>
+
+</VBox>

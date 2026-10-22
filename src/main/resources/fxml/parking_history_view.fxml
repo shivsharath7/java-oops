@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.ParkingHistoryController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Parking Records History &amp; Dispute Management" styleClass="page-title"/>
+                <Label text="Audit trail of completed sessions, fee collections, receipts, and customer dispute resolution" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🔄 Refresh Records" styleClass="btn-secondary" onAction="#loadRecords"/>
+        </HBox>
+
+        <!-- Search and Filter Bar -->
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="panel-card" style="-fx-padding: 12 16;">
+            <TextField fx:id="txtSearch" promptText="Search Ticket ID or Plate" prefWidth="220" onAction="#loadRecords"/>
+
+            <VBox spacing="2">
+                <Label text="Status" styleClass="form-label"/>
+                <ComboBox fx:id="comboStatus" prefWidth="140" onAction="#loadRecords"/>
+            </VBox>
+
+            <VBox spacing="2">
+                <Label text="Vehicle Type" styleClass="form-label"/>
+                <ComboBox fx:id="comboType" prefWidth="140" onAction="#loadRecords"/>
+            </VBox>
+
+            <Button text="🔍 Filter" styleClass="btn-secondary" onAction="#loadRecords"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblRecordCount" text="Showing 0 records" styleClass="kpi-subtext"/>
+        </HBox>
+
+        <!-- Main Tab Pane: Records History & Disputes Board -->
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="panel-card" style="-fx-padding: 8;">
+            <!-- Tab 1: Parking Sessions History -->
+            <Tab text="📜 All Parking Sessions">
+                <VBox spacing="12">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <TableView fx:id="tableRecords" prefHeight="380" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colTicket" text="Ticket ID" prefWidth="140"/>
+                            <TableColumn fx:id="colPlate" text="Vehicle Plate" prefWidth="120"/>
+                            <TableColumn fx:id="colType" text="Type" prefWidth="90"/>
+                            <TableColumn fx:id="colSlot" text="Slot" prefWidth="70"/>
+                            <TableColumn fx:id="colFloor" text="Floor / Zone" prefWidth="120"/>
+                            <TableColumn fx:id="colEntry" text="Entry Time" prefWidth="130"/>
+                            <TableColumn fx:id="colExit" text="Exit Time" prefWidth="130"/>
+                            <TableColumn fx:id="colDuration" text="Duration (Mins)" prefWidth="100"/>
+                            <TableColumn fx:id="colFee" text="Fee (INR)" prefWidth="85"/>
+                            <TableColumn fx:id="colPayStatus" text="Payment" prefWidth="95"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="90"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No records match current filter criteria." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button fx:id="btnFileDispute" text="⚖️ File Dispute on Selected Session" styleClass="btn-secondary" onAction="#handleFileDispute"/>
+                        <Button fx:id="btnViewReceipt" text="🧾 View Digital Receipt" styleClass="btn-secondary" onAction="#handleViewReceipt"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblHistoryActionStatus" text="" style="-fx-font-size: 12px;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 2: Disputes Board -->
+            <Tab text="⚖️ Customer Disputes Board">
+                <VBox spacing="12">
+                    <padding><Insets top="14" right="10" bottom="10" left="10"/></padding>
+
+                    <TableView fx:id="tableDisputes" prefHeight="380" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colDispId" text="Dispute ID" prefWidth="90"/>
+                            <TableColumn fx:id="colDispTicket" text="Ticket ID" prefWidth="130"/>
+                            <TableColumn fx:id="colDispPlate" text="Vehicle" prefWidth="110"/>
+                            <TableColumn fx:id="colDispCat" text="Category" prefWidth="140"/>
+                            <TableColumn fx:id="colDispDesc" text="Description" prefWidth="280"/>
+                            <TableColumn fx:id="colDispFee" text="Disputed Fee" prefWidth="100"/>
+                            <TableColumn fx:id="colDispStatus" text="Status" prefWidth="110"/>
+                            <TableColumn fx:id="colDispDate" text="Date Filed" prefWidth="130"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No parking disputes filed." styleClass="text-muted"/>
+                        </placeholder>
+                    </TableView>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button fx:id="btnResolveDispute" text="✅ Approve / Waive Fee" styleClass="btn-success" onAction="#handleApproveDispute"/>
+                        <Button fx:id="btnRejectDispute" text="❌ Reject Dispute" styleClass="btn-danger" onAction="#handleRejectDispute"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblDisputeActionFeedback" text="" style="-fx-font-size: 12px;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+
+    </VBox>
+</ScrollPane>

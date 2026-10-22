@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.DashboardController"
+            fitToWidth="true" styleClass="content-scrollpane">
+
+    <VBox spacing="18" styleClass="content-area">
+        <padding>
+            <Insets top="20" right="24" bottom="24" left="24"/>
+        </padding>
+
+        <!-- Page Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Live Operations Dashboard" styleClass="page-title"/>
+                <Label text="Real-time multi-storey capacity, floor congestion metrics, and operational activity" styleClass="page-subtitle"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ProgressIndicator fx:id="progressLoading" visible="false" prefWidth="24" prefHeight="24"/>
+            <Button text="🔄 Refresh Metrics" styleClass="btn-secondary" onAction="#refreshData"/>
+        </HBox>
+
+        <!-- 8 KPI Metric Cards in 2 rows -->
+        <GridPane hgap="14" vgap="14">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+            </columnConstraints>
+
+            <!-- Total Slots -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="TOTAL SLOTS" styleClass="kpi-label"/>
+                <Label fx:id="lblTotalSlots" text="--" styleClass="kpi-value"/>
+                <Label text="Capacity across 3 floors" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Available Slots -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="AVAILABLE" styleClass="kpi-label"/>
+                <Label fx:id="lblAvailableSlots" text="--" styleClass="kpi-value, text-emerald"/>
+                <Label text="Ready for immediate assignment" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Occupied Slots -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <Label text="OCCUPIED" styleClass="kpi-label"/>
+                <Label fx:id="lblOccupiedSlots" text="--" styleClass="kpi-value, text-rose"/>
+                <Label text="Active vehicles parked" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Reserved Slots -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                <Label text="RESERVED" styleClass="kpi-label"/>
+                <Label fx:id="lblReservedSlots" text="--" styleClass="kpi-value, text-amber"/>
+                <Label text="Temporary holds pending arrival" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Occupancy Rate -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="OCCUPANCY RATE" styleClass="kpi-label"/>
+                <Label fx:id="lblOccupancyPct" text="--%" styleClass="kpi-value, text-sky"/>
+                <Label text="Total facility capacity utilized" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Active Sessions -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="ACTIVE SESSIONS" styleClass="kpi-label"/>
+                <Label fx:id="lblActiveSessions" text="--" styleClass="kpi-value"/>
+                <Label text="Registered entry tickets" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Active EV Bays -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Label text="EV CHARGING BAYS" styleClass="kpi-label"/>
+                <Label fx:id="lblEvChargingBays" text="--" styleClass="kpi-value, text-sky"/>
+                <Label text="Fast DC &amp; AC charging active" styleClass="kpi-subtext"/>
+            </VBox>
+
+            <!-- Open Alerts -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                <Label text="OPEN ANOMALIES" styleClass="kpi-label"/>
+                <Label fx:id="lblOpenAlerts" text="--" styleClass="kpi-value, text-rose"/>
+                <Label text="Inconsistencies requiring review" styleClass="kpi-subtext"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Floor Overview & Congestion Indicator -->
+        <HBox spacing="16">
+            <!-- Floor Overview Container -->
+            <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="12">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="2">
+                        <Label text="Multi-Floor Availability &amp; Breakdown" styleClass="section-title"/>
+                        <Label text="Occupancy distribution across Basement 1, Ground Floor, and First Floor" styleClass="section-subtitle"/>
+                    </VBox>
+                </HBox>
+                <VBox fx:id="floorStatusContainer" spacing="10"/>
+            </VBox>
+
+            <!-- Congestion Indicator Box -->
+            <VBox styleClass="panel-card" prefWidth="380" spacing="12">
+                <Label text="System Congestion Level" styleClass="section-title"/>
+                <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #0f172a; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #334155; -fx-border-radius: 10;">
+                    <Label fx:id="lblCongestionLevel" text="CALCULATING..." style="-fx-font-size: 20px; -fx-font-weight: 800; -fx-text-fill: #38bdf8;"/>
+                    <ProgressBar fx:id="progressCongestion" prefWidth="300" progress="0.0"/>
+                    <Label fx:id="lblCongestionAdvice" text="Evaluating current traffic thresholds..." wrapText="true" styleClass="text-muted" style="-fx-text-alignment: CENTER; -fx-font-size: 12px;"/>
+                </VBox>
+                <Label text="Threshold Rules: Low (&lt; 40%) | Moderate (40% - 75%) | High (&gt; 75%)" styleClass="kpi-subtext" style="-fx-font-size: 11px;"/>
+            </VBox>
+        </HBox>
+
+        <!-- Recent Activity Audit Stream -->
+        <VBox styleClass="panel-card" spacing="12">
+            <HBox alignment="CENTER_LEFT">
+                <VBox spacing="2">
+                    <Label text="Recent Operational Activity" styleClass="section-title"/>
+                    <Label text="Chronological event log of vehicle entries, exits, reservations, and alerts" styleClass="section-subtitle"/>
+                </VBox>
+            </HBox>
+
+            <TableView fx:id="tableRecentActivity" prefHeight="220" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="colTime" text="Timestamp" prefWidth="150"/>
+                    <TableColumn fx:id="colType" text="Event Type" prefWidth="140"/>
+                    <TableColumn fx:id="colRef" text="Reference" prefWidth="140"/>
+                    <TableColumn fx:id="colDesc" text="Description" prefWidth="420"/>
+                    <TableColumn fx:id="colActor" text="Operator" prefWidth="110"/>
+                </columns>
+                <placeholder>
+                    <Label text="No recent events recorded." styleClass="text-muted"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+
+    </VBox>
+</ScrollPane>
