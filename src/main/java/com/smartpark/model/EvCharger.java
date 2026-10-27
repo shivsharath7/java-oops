@@ -48,6 +48,6 @@ public class EvCharger {
 
     @Override
     public String toString() {
-        return chargerCode + " (" + powerKw + " kW)";
+        return chargerCode + (slotNumber != null && !slotNumber.isBlank() ? " [Slot " + slotNumber + "]" : "") + " (" + powerKw + " kW)";
     }
 }

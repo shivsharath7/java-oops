@@ -55,8 +55,17 @@ public class FindVehicleController {
         currentLocation = routeService.locateVehicle(query);
         if (!currentLocation.isFound()) {
             lblLocatorStatus.setText(currentLocation.getMessage());
-            lblLocatorStatus.setStyle("-fx-text-fill: #ef4444;");
+            lblLocatorStatus.setStyle("-fx-text-fill: #f59e0b; -fx-font-weight: bold;");
             clearUI();
+            if (currentLocation.getRecord() != null) {
+                ParkingRecord r = currentLocation.getRecord();
+                lblLocPlate.setText(r.getVehicleNumber());
+                lblLocSlot.setText(r.getSlotNumber() + " (Departed)");
+                lblLocFloorZone.setText(r.getFloor() + " - " + r.getZone());
+                lblLocTicket.setText(r.getTicketId());
+                lblLocTime.setText(r.getEntryTime() != null ? r.getEntryTime().format(DTF) : "--");
+                lblLocDuration.setText(r.getDurationMinutes() + " mins (Completed)");
+            }
             return;
         }
 

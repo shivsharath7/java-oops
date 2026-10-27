@@ -6,6 +6,7 @@ import com.smartpark.dao.ParkingSlotDAO;
 import com.smartpark.enums.SlotStatus;
 import com.smartpark.enums.VehicleType;
 import com.smartpark.model.AuditEvent;
+import com.smartpark.model.ParkingFloor;
 import com.smartpark.model.ParkingRecord;
 import com.smartpark.model.ParkingSlot;
 import javafx.application.Platform;
@@ -73,14 +74,38 @@ public class ParkingMapController {
     }
 
     private void initFilterDropdowns() {
-        comboFloorFilter.getItems().setAll("All Floors", "Ground Floor", "Basement 1", "First Floor");
-        comboFloorFilter.setValue("All Floors");
+        updateFloorFilterOptions();
 
         comboTypeFilter.getItems().setAll("All Types", "CAR", "BIKE", "EV_CAR", "ACCESSIBLE_CAR");
         comboTypeFilter.setValue("All Types");
 
         comboStatusFilter.getItems().setAll("All Statuses", "AVAILABLE", "OCCUPIED", "RESERVED", "EV_CHARGING", "MAINTENANCE");
         comboStatusFilter.setValue("All Statuses");
+    }
+
+    private void updateFloorFilterOptions() {
+        String current = comboFloorFilter.getValue();
+        java.util.Set<String> floors = new java.util.LinkedHashSet<>();
+        floors.add("All Floors");
+
+        try {
+            for (ParkingFloor pf : slotDAO.getAllFloors()) {
+                floors.add(pf.getFloorName());
+            }
+        } catch (Exception ignored) {}
+
+        for (ParkingSlot s : allSlots) {
+            if (s.getFloor() != null && !s.getFloor().isBlank()) {
+                floors.add(s.getFloor());
+            }
+        }
+
+        comboFloorFilter.getItems().setAll(floors);
+        if (current != null && floors.contains(current)) {
+            comboFloorFilter.setValue(current);
+        } else {
+            comboFloorFilter.setValue("All Floors");
+        }
     }
 
     @FXML
@@ -94,6 +119,7 @@ public class ParkingMapController {
 
         task.setOnSucceeded(e -> {
             allSlots = task.getValue();
+            updateFloorFilterOptions();
             applyFilters();
         });
 
@@ -121,13 +147,49 @@ public class ParkingMapController {
         lblGridSummary.setText("Showing " + filtered.size() + " of " + allSlots.size() + " Parking Slots");
         renderGrid(filtered);
 
-        if (!filtered.isEmpty() && selectedSlot == null) {
-            selectSlot(filtered.get(0));
+        if (!filtered.isEmpty()) {
+            if (selectedSlot == null || !filtered.contains(selectedSlot)) {
+                selectSlot(filtered.get(0));
+            }
+        } else {
+            clearDetailSelection();
         }
+    }
+
+    private void clearDetailSelection() {
+        this.selectedSlot = null;
+        lblDetailSlotNumber.setText("--");
+        lblDetailFloorZone.setText("--");
+        lblDetailType.setText("--");
+        lblDetailProximity.setText("--");
+        lblDetailCharger.setText("--");
+        lblDetailAccessible.setText("--");
+        lblSlotBadge.setText("NONE");
+        lblSlotBadge.setStyle("-fx-background-color: #334155; -fx-text-fill: #94a3b8;");
+        lblSessionVehicle.setText("No Slot Selected");
+        lblSessionTicket.setText("Ticket: --");
+        lblSessionDuration.setText("Entry: --");
+        btnParkHere.setDisable(true);
+        btnReserveSlot.setDisable(true);
+        btnFreeSlot.setDisable(true);
+        btnToggleMaintenance.setDisable(true);
     }
 
     private void renderGrid(List<ParkingSlot> slots) {
         slotFlowPane.getChildren().clear();
+
+        if (slots.isEmpty()) {
+            VBox emptyBox = new VBox(8);
+            emptyBox.setAlignment(Pos.CENTER);
+            emptyBox.setStyle("-fx-padding: 40;");
+            Label lblEmpty = new Label("No parking bays match the selected filter criteria.");
+            lblEmpty.setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 14px; -fx-font-weight: bold;");
+            Label lblSub = new Label("Try resetting floor, vehicle type, or status filters.");
+            lblSub.setStyle("-fx-text-fill: #64748b; -fx-font-size: 12px;");
+            emptyBox.getChildren().addAll(lblEmpty, lblSub);
+            slotFlowPane.getChildren().add(emptyBox);
+            return;
+        }
 
         for (ParkingSlot s : slots) {
             VBox tile = createSlotTile(s);

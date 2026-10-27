@@ -2,6 +2,7 @@ package com.smartpark.dao;
 
 import com.smartpark.enums.SlotStatus;
 import com.smartpark.enums.VehicleType;
+import com.smartpark.model.ParkingFloor;
 import com.smartpark.model.ParkingSlot;
 import com.smartpark.util.DatabaseConnection;
 
@@ -182,6 +183,26 @@ public class ParkingSlotDAO {
             System.err.println("[ParkingSlotDAO Error] deleteSlot: " + e.getMessage());
             return false;
         }
+    }
+
+    public List<ParkingFloor> getAllFloors() {
+        List<ParkingFloor> list = new ArrayList<>();
+        String sql = "SELECT * FROM parking_floors ORDER BY floor_level ASC";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new ParkingFloor(
+                        rs.getInt("id"),
+                        rs.getString("floor_name"),
+                        rs.getInt("floor_level"),
+                        rs.getInt("total_slots")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("[ParkingSlotDAO Error] getAllFloors: " + e.getMessage());
+        }
+        return list;
     }
 
     private ParkingSlot mapResultSetToSlot(ResultSet rs) throws SQLException {

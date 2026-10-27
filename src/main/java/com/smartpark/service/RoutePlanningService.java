@@ -66,7 +66,16 @@ public class RoutePlanningService {
         ParkingRecord record = recordDAO.findRecordByTicketOrPlate(ticketOrPlate);
         if (record == null) {
             return new VehicleLocationResult(false, null, null, null, null,
-                    "No active or historical parking session found for '" + ticketOrPlate + "'.");
+                    "No parking record found for '" + ticketOrPlate + "'. Verify registration plate or ticket ID.");
+        }
+
+        if (!"ACTIVE".equalsIgnoreCase(record.getStatus())) {
+            String exitTimeStr = record.getExitTime() != null 
+                    ? record.getExitTime().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) 
+                    : "earlier";
+            return new VehicleLocationResult(false, record, null, null, null,
+                    "Vehicle " + record.getVehicleNumber() + " checked out at " + exitTimeStr + 
+                    " (Ticket: " + record.getTicketId() + "). Vehicle is not currently parked.");
         }
 
         ParkingSlot slot = slotDAO.getSlotById(record.getSlotId());
