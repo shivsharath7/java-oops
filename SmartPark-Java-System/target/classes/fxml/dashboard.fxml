@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.smartpark.controller.DashboardController"
+            stylesheets="@../css/style.css" styleClass="main-container">
+
+    <!-- Sidebar Navigation -->
+    <left>
+        <VBox spacing="12" styleClass="sidebar" prefWidth="240">
+            <padding>
+                <Insets top="24" right="16" bottom="24" left="16"/>
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="🅿️" style="-fx-font-size: 24px;"/>
+                <VBox>
+                    <Label text="SmartPark" styleClass="brand-title"/>
+                    <Label text="Intelligent System" styleClass="brand-subtitle"/>
+                </VBox>
+            </HBox>
+
+            <Separator styleClass="sidebar-separator"/>
+
+            <Button fx:id="btnDashboard" text="📊  Dashboard" styleClass="nav-btn, nav-btn-active" maxWidth="Infinity" onAction="#handleNavDashboard"/>
+            <Button fx:id="btnEntry" text="🚗  Vehicle Entry" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavEntry"/>
+            <Button fx:id="btnExit" text="🏁  Vehicle Exit" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavExit"/>
+            <Button fx:id="btnMap" text="🗺️  Parking Map" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavMap"/>
+            <Button fx:id="btnFind" text="🔍  Find My Vehicle" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavFind"/>
+            <Button fx:id="btnAdmin" text="🛡️  Admin Panel" styleClass="nav-btn" maxWidth="Infinity" onAction="#handleNavAdmin"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <VBox styleClass="sidebar-footer-card" spacing="4">
+                <Label text="System Status: 🟢 Online" styleClass="text-status-online"/>
+                <Label text="MySQL DB: Connected" styleClass="text-muted"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Main Content Area -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="content-scrollpane">
+            <VBox spacing="20" styleClass="content-area">
+                <padding>
+                    <Insets top="24" right="28" bottom="28" left="28"/>
+                </padding>
+
+                <!-- Header Banner -->
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="4">
+                        <Label text="Live Parking Dashboard" styleClass="page-title"/>
+                        <Label text="Real-time parking space occupancy and floor availability" styleClass="page-subtitle"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="🔄 Refresh Stats" styleClass="btn-secondary" onAction="#refreshData"/>
+                </HBox>
+
+                <!-- 4 KPI Cards -->
+                <HBox spacing="16">
+                    <VBox styleClass="kpi-card, kpi-total" HBox.hgrow="ALWAYS">
+                        <Label text="TOTAL SLOTS" styleClass="kpi-label"/>
+                        <Label fx:id="lblTotalSlots" text="64" styleClass="kpi-value"/>
+                    </VBox>
+                    <VBox styleClass="kpi-card, kpi-available" HBox.hgrow="ALWAYS">
+                        <Label text="AVAILABLE" styleClass="kpi-label"/>
+                        <Label fx:id="lblAvailableSlots" text="26" styleClass="kpi-value, text-emerald"/>
+                    </VBox>
+                    <VBox styleClass="kpi-card, kpi-occupied" HBox.hgrow="ALWAYS">
+                        <Label text="OCCUPIED" styleClass="kpi-label"/>
+                        <Label fx:id="lblOccupiedSlots" text="34" styleClass="kpi-value, text-rose"/>
+                    </VBox>
+                    <VBox styleClass="kpi-card, kpi-reserved" HBox.hgrow="ALWAYS">
+                        <Label text="RESERVED" styleClass="kpi-label"/>
+                        <Label fx:id="lblReservedSlots" text="4" styleClass="kpi-value, text-amber"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Congestion & Floor Status Section -->
+                <HBox spacing="16">
+                    <VBox styleClass="panel-card" HBox.hgrow="ALWAYS" spacing="12">
+                        <Label text="Floor-by-Floor Availability" styleClass="section-title"/>
+                        <VBox fx:id="floorStatusContainer" spacing="10"/>
+                    </VBox>
+
+                    <VBox styleClass="panel-card" prefWidth="380" spacing="12">
+                        <Label text="Congestion Indicator" styleClass="section-title"/>
+                        <VBox alignment="CENTER" spacing="8" styleClass="congestion-badge-box">
+                            <Label fx:id="lblCongestionLevel" text="MEDIUM (53%)" styleClass="congestion-title"/>
+                            <Label fx:id="lblCongestionAdvice" text="🟡 Parking is filling fast. Prefer First Floor Zone D." styleClass="congestion-desc" wrapText="true"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

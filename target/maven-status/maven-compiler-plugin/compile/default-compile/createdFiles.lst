@@ -48,6 +48,7 @@ com\smartpark\controller\MainAppController.class
 com\smartpark\service\ReportService.class
 com\smartpark\service\ParkingService.class
 com\smartpark\strategy\StandardAllocationStrategy.class
+com\smartpark\util\DatabaseConnection$1.class
 com\smartpark\util\ValidationUtil.class
 com\smartpark\service\ReportService$AnalyticsSummary.class
 com\smartpark\model\AuditEvent.class

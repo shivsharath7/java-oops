@@ -1,0 +1,120 @@
+/* SmartPark JavaFX Dark Theme */
+.main-container {
+    -fx-background-color: #0f172a;
+    -fx-font-family: 'Segoe UI', 'Plus Jakarta Sans', sans-serif;
+}
+
+.sidebar {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 1 0 0;
+}
+
+.brand-title {
+    -fx-text-fill: #38bdf8;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.brand-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+}
+
+.sidebar-separator {
+    -fx-background-color: #334155;
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 14;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.nav-btn:hover {
+    -fx-background-color: #334155;
+    -fx-text-fill: #ffffff;
+}
+
+.nav-btn-active {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.content-scrollpane {
+    -fx-background-color: transparent;
+    -fx-background: #0f172a;
+}
+
+.page-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+}
+
+.kpi-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-border-color: #334155;
+    -fx-border-radius: 12;
+}
+
+.kpi-label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.text-emerald { -fx-text-fill: #10b981; }
+.text-rose { -fx-text-fill: #ef4444; }
+.text-amber { -fx-text-fill: #f59e0b; }
+
+.panel-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-border-color: #334155;
+    -fx-border-radius: 12;
+}
+
+.btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-secondary {
+    -fx-background-color: #334155;
+    -fx-text-fill: #e2e8f0;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #475569;
+}

@@ -1,0 +1,9 @@
+com\smartpark\ParkingFeeCalculatorTest.class
+com\smartpark\ValidationUtilTest.class
+com\smartpark\ReportExportTest.class
+com\smartpark\ReservationServiceTest.class
+com\smartpark\FxmlIntegrityTest.class
+com\smartpark\DijkstraRoutePlannerTest.class
+com\smartpark\AllocationStrategyTest.class
+com\smartpark\AnomalyDetectionServiceTest.class
+com\smartpark\ParkingIntegrationTest.class
